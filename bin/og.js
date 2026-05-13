@@ -76,6 +76,7 @@ async function main() {
 		defaultOutput: gen.defaultOutput,
 		viewport: gen.viewport,
 		extraParams: gen.extraParams,
+		waitUntil: gen.waitUntil,
 		waitFor: gen.waitFor,
 		settleMs: gen.settleMs,
 	});

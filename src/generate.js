@@ -45,7 +45,7 @@ function startServer(root) {
 }
 
 /** Query string carrying the canonical card copy + theme into the template. */
-function templateQuery({ card, theme, origin, extraParams }) {
+function templateQuery({ card, theme, origin, extraParams, variantParams }) {
 	const params = new URLSearchParams({
 		theme,
 		name: card?.name ?? "",
@@ -54,12 +54,10 @@ function templateQuery({ card, theme, origin, extraParams }) {
 		title: card?.title ?? "",
 		description: card?.description ?? "",
 	});
-	const extra =
-		typeof extraParams === "function"
-			? extraParams({ theme, origin, card })
-			: extraParams;
-	for (const [k, v] of Object.entries(extra ?? {})) {
-		params.set(k, String(v));
+	const base =
+		typeof extraParams === "function" ? extraParams({ theme, origin, card }) : extraParams;
+	for (const [k, v] of Object.entries({ ...base, ...variantParams })) {
+		if (v != null) params.set(k, String(v));
 	}
 	return params.toString();
 }
@@ -80,7 +78,8 @@ function templateQuery({ card, theme, origin, extraParams }) {
  *        default: dark -> og-dark.png, light -> og-light.png
  * @param {string} [config.defaultOutput] which variant file to copy to og-image.png. Default "og-dark.png"
  * @param {{ width?: number, height?: number, deviceScaleFactor?: number }} [config.viewport] default 1200x630@1
- * @param {object|((ctx:{theme:string,origin:string,card:any})=>object)} [config.extraParams] extra template query params
+ * @param {object|((ctx:{theme:string,origin:string,card:any})=>object)} [config.extraParams] extra template query params; per-variant `extraParams` is merged on top
+ * @param {"load"|"domcontentloaded"|"networkidle0"|"networkidle2"} [config.waitUntil] page.goto wait condition. Default "networkidle0"
  * @param {string|number|null} [config.waitFor] JS expression to waitForFunction on, or ms to pause. Default waits document.fonts.ready
  * @param {number} [config.settleMs] extra pause after load for font/canvas paint. Default 1000
  * @param {(msg: string) => void} [config.log] default console.log
@@ -98,6 +97,7 @@ export async function generateOgImages(config) {
 		defaultOutput = "og-dark.png",
 		viewport = {},
 		extraParams,
+		waitUntil = "networkidle0",
 		waitFor,
 		settleMs = 1000,
 		log = console.log,
@@ -130,12 +130,10 @@ export async function generateOgImages(config) {
 				card,
 				theme: variant.theme,
 				origin,
-				extraParams: variant.extraParams ?? extraParams,
+				extraParams,
+				variantParams: variant.extraParams,
 			});
-			await page.goto(`${origin}/${template}?${query}`, {
-				waitUntil: "networkidle0",
-				timeout: 20000,
-			});
+			await page.goto(`${origin}/${template}?${query}`, { waitUntil, timeout: 20000 });
 
 			await page
 				.waitForFunction("document.fonts.ready.then(() => true)", { timeout: 10000 })

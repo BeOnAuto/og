@@ -69,11 +69,14 @@ export default {
       { theme: "light", output: "og-light.png" },
     ],
     defaultOutput: "og-dark.png",         // copied to og-image.png
+    waitUntil: "networkidle0",            // page.goto condition; "domcontentloaded" if a CDN import stalls networkidle
     waitFor: "window.__OG_READY === true",// string => waitForFunction; number => ms pause; optional
-    extraParams: ({ origin }) => ({ animation: `${origin}/docs/public/animations/hero.json` }),
+    extraParams: ({ theme, origin }) => ({ bgUrl: `${origin}/docs/public/animations/bg-${theme}.svg` }),
   },
 };
 ```
+
+`variants[].extraParams` is merged on top of the top-level `extraParams` for that variant.
 
 ```jsonc
 // package.json

@@ -1,6 +1,6 @@
 {
   "name": "@beonauto/og",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Shared Open Graph pipeline for Auto's sites: one source of truth for the social card copy (title/description) and the image generator that renders it. Consumed by git URL.",
   "license": "UNLICENSED",
   "type": "module",
