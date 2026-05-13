@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=1200" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=block" rel="stylesheet" />
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1200px; height: 630px; overflow: hidden; font-family: "Inter", system-ui, sans-serif; }
+
+  body { background: #faf9f7; color: #1c1b1a; }
+  body.dark { background: #16140f; color: #f4f1ea; }
+
+  .card { position: relative; width: 1200px; height: 630px; display: flex; flex-direction: column; justify-content: center; padding: 88px 96px; }
+  .accent { position: absolute; top: 0; left: 0; right: 0; height: 8px; background: #c2410c; }
+  body.dark .accent { background: #f97316; }
+
+  .name {
+    font-size: 1.5rem; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase;
+    color: #b45309; margin-bottom: 28px;
+  }
+  body.dark .name { color: #fdba74; }
+
+  .headline { font-size: 4.6rem; font-weight: 900; line-height: 1.04; letter-spacing: -0.03em; max-width: 18ch; }
+  .tagline { margin-top: 28px; font-size: 1.9rem; font-weight: 400; line-height: 1.4; max-width: 34ch; opacity: 0.74; }
+
+  .foot { position: absolute; bottom: 56px; left: 96px; right: 96px; display: flex; justify-content: space-between; align-items: baseline; font-size: 1.25rem; font-weight: 500; }
+  .foot .url { letter-spacing: 0.02em; opacity: 0.55; }
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="accent" aria-hidden="true"></div>
+  <div class="name" id="name"></div>
+  <div class="headline" id="headline"></div>
+  <div class="tagline" id="tagline"></div>
+  <div class="foot">
+    <span class="badge" id="badge"></span>
+    <span class="url" id="url"></span>
+  </div>
+</div>
+<script>
+  const p = new URLSearchParams(location.search);
+  if ((p.get("theme") || "light") === "dark") document.body.classList.add("dark");
+
+  const name = p.get("name") || "";
+  const headline = p.get("headline") || p.get("title") || name;
+  const tagline = p.get("tagline") || p.get("description") || "";
+
+  document.getElementById("name").textContent = name;
+  document.getElementById("headline").textContent = headline;
+  document.getElementById("tagline").textContent = tagline;
+  document.getElementById("badge").textContent = name;
+
+  let url = p.get("url") || "";
+  if (!url) {
+    try { url = new URL(document.referrer || location.href).host.replace(/^www\./, ""); } catch {}
+  }
+  document.getElementById("url").textContent = url;
+  document.getElementById("name").style.display = name ? "" : "none";
+</script>
+</body>
+</html>

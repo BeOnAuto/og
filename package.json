@@ -1,0 +1,45 @@
+{
+  "name": "@beonauto/og",
+  "version": "0.1.0",
+  "description": "Shared Open Graph pipeline for Auto's sites: one source of truth for the social card copy (title/description) and the image generator that renders it.",
+  "license": "UNLICENSED",
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BeOnAuto/og.git"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
+  "exports": {
+    ".": "./src/index.js",
+    "./meta": "./src/meta.js",
+    "./generate": "./src/generate.js",
+    "./template": "./src/template.js"
+  },
+  "bin": {
+    "og": "./bin/og.js"
+  },
+  "files": [
+    "src",
+    "bin",
+    "templates"
+  ],
+  "scripts": {
+    "test": "vitest run"
+  },
+  "peerDependencies": {
+    "puppeteer": ">=22"
+  },
+  "peerDependenciesMeta": {
+    "puppeteer": {
+      "optional": true
+    }
+  },
+  "dependencies": {
+    "gray-matter": "^4.0.3"
+  },
+  "devDependencies": {
+    "vitest": "^3.0.0"
+  }
+}
