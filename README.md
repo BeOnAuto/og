@@ -10,27 +10,18 @@ the picture can't drift from what the page says.
 
 ## Install (from a site repo)
 
-Published to **GitHub Packages** (private, org `BeOnAuto`). In the consuming repo:
-
-```ini
-# .npmrc
-@beonauto:registry=https://npm.pkg.github.com
-//npm.pkg.github.com/:_authToken=${NODE_AUTH_TOKEN}
-```
+Consumed straight from this (public) repo by git URL — no registry, no auth,
+works the same locally and in CI. Pin to a tag:
 
 ```jsonc
 // package.json
 "devDependencies": {
-  "@beonauto/og": "^0.1.0",
+  "@beonauto/og": "github:BeOnAuto/og#v0.2.0",
   "puppeteer": "^24.40.0"
 }
 ```
 
-- Locally: `NODE_AUTH_TOKEN` = a personal access token with `read:packages`.
-- In CI: set `NODE_AUTH_TOKEN` from a token that can read the package. A repo's
-  own `GITHUB_TOKEN` can't read packages owned by a *different* repo unless that
-  package grants it access (Package settings → Manage Actions access → add repo),
-  so most consumers use an org PAT secret.
+`puppeteer` is an optional peer dep, only needed by `og generate`.
 
 ## Use
 
