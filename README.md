@@ -1,6 +1,6 @@
 # @beonauto/og
 
-Shared Open Graph **pipeline** for Auto's sites (`narrativedriven.org`, `specdriven.com`, `on.auto`).
+Shared Open Graph **pipeline** for Auto's sites (`specdriven.com`, `on.auto`).
 
 The package is the *process*: it derives the social card copy from the homepage,
 emits the `<meta>` tags, and runs the screenshot harness. The *content* — your
